@@ -1,0 +1,10 @@
+fyne.io/fyne/v2 v2.7.3 h1:xBT/iYbdnNHONWO38fZMBrVBiJG8rV/Jypmy4tVfRWE=
+fyne.io/fyne/v2 v2.7.3/go.mod h1:gu+dlIcZWSzKZmnrY8Fbnj2Hirabv2ek+AKsfQ2bBlw=
+github.com/Kwynto/colorable v0.0.0-20240317120435-a6f59ba89a16 h1:qOhPvNOTQDA6iimhmhixCBcHPrzir1EcdnkCouRNhmQ=
+github.com/Kwynto/colorable v0.0.0-20240317120435-a6f59ba89a16/go.mod h1:ZLUVFFbbvydMQxuB3lhRJeuhIQ24FcwKFGMvwuu7klM=
+github.com/Kwynto/isatty v0.0.0-20240315100545-67642426cab2 h1:PPgYz49E72Fik2U56URztTG9Gd/inryfjs2Sbdjor3g=
+github.com/Kwynto/isatty v0.0.0-20240315100545-67642426cab2/go.mod h1:/gZShF+pYx9oexYSLSZ0lGxxsx/D5S90ibZ1rnj53ag=
+golang.org/x/sys v0.6.0 h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ=
+golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.41.0 h1:Ivj+2Cp/ylzLiEU89QhWblYnOE9zerudt9Ftecq2C6k=
+golang.org/x/sys v0.41.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
