@@ -1,12 +1,9 @@
 package defective
 
 import (
-	"fmt"
 	"slices"
-	"strconv"
 
-	"github.com/Kwynto/mech-exp/internal/intypes"
-	"github.com/Kwynto/mech-exp/pkg/incolor"
+	"github.com/Kwynto/mech-exp-2/internal/intypes"
 )
 
 const (
@@ -35,14 +32,7 @@ func initMapNumbers() intypes.TMapNembers {
 	return initMap
 }
 
-func spaceSimbol(k int) string {
-	if (k / 10) >= 1 {
-		return ""
-	}
-	return " "
-}
-
-func preAnalize(slStInput []intypes.TStGame, iGame int) int {
+func PreAnalize(slStInput []intypes.TStGame, iGame int) int {
 	var (
 		slWork []intypes.TStGame
 		// iAllNumbers int = 0
@@ -84,8 +74,13 @@ func preAnalize(slStInput []intypes.TStGame, iGame int) int {
 	return iBorder
 }
 
-func startAnalize(slStInput []intypes.TStGame, iGame, iBorder int) {
+func StartAnalize(slStInput []intypes.TStGame, iGame, iBorder int) (intypes.TPremiumNumber, intypes.TRiskNumbers) {
 	var slWork []intypes.TStGame
+
+	var (
+		slPremiumNumber intypes.TPremiumNumber
+		slRiskNumbers   intypes.TRiskNumbers
+	)
 
 	slStPrepear := slices.Clone(slStInput)
 	slices.Reverse(slStPrepear)
@@ -100,19 +95,10 @@ func startAnalize(slStInput []intypes.TStGame, iGame, iBorder int) {
 	}
 
 	if iGame == 0 {
-		fmt.Println(incolor.StringBlueH("Анализ всех тиражей."))
 		slWork = slStPrepear
 	} else {
-		sMsg1 := fmt.Sprintf("Анализ %d тиражей.", iGame)
-		fmt.Println(incolor.StringBlueH(sMsg1))
 		slWork = slStPrepear[0:iGame]
 	}
-
-	fmt.Println("")
-
-	// for _, v := range slWork {
-	// 	fmt.Println(v.Game)
-	// }
 
 	mStatNumbers := initMapNumbers()
 
@@ -140,66 +126,52 @@ func startAnalize(slStInput []intypes.TStGame, iGame, iBorder int) {
 		}
 	}
 
-	fmt.Println(incolor.StringGreenH("Премиальные номера:"))
+	// fmt.Println(incolor.StringGreenH("Премиальные номера:"))
 	for i := range NUMBERS_IN_GAME {
 		k1 := i + 1
 		for k, v := range mStatNumbers {
 			if k == k1 {
 				if v.Wrong < iBorder {
 					if v.PremiumWin > (iBorder * 4) {
-						sMsg := fmt.Sprintf("Номер %s%s premium = %d", spaceSimbol(k), incolor.StringGreen("%d", k), v.PremiumWin)
-						fmt.Println(sMsg)
+						slPremiumNumber = append(slPremiumNumber, intypes.TCharacteristicNumder{
+							Name: k,
+							Sum:  v.PremiumWin,
+						})
 					}
 				}
 			}
 		}
 	}
 
-	fmt.Println("")
-
-	fmt.Println(incolor.StringRedH("Номера зоны риска:"))
+	// fmt.Println(incolor.StringRedH("Номера зоны риска:"))
 	for i := range NUMBERS_IN_GAME {
 		k1 := i + 1
 		for k, v := range mStatNumbers {
 			if k == k1 {
 				if v.Wrong >= iBorder {
-					sMsg := fmt.Sprintf("Номер %s%s wrong = %d", spaceSimbol(k), incolor.StringRed("%d", k), v.Wrong)
-					fmt.Println(sMsg)
+					slRiskNumbers = append(slRiskNumbers, intypes.TCharacteristicNumder{
+						Name: k,
+						Sum:  v.Wrong,
+					})
 				}
 			}
 		}
 	}
 
+	return slPremiumNumber, slRiskNumbers
 }
 
-func Start(slStInput []intypes.TStGame) {
-	var sGame, sBorder string
+// func Start(slStInput []intypes.TStGame) {
 
-	SlStGames = slStInput
+// 	SlStGames = slStInput
 
-	fmt.Println(incolor.StringBlue("Дефектный анализ:"))
+// 	// временно
+// 	iGame := 0
+// 	iBorder := 2
 
-	fmt.Print(incolor.StringMagenta("Кол-во последних тиражей для анализа (0 для всех тиражей) > "))
-	fmt.Scanf("%v\n", &sGame)
-	iGame, err1 := strconv.Atoi(sGame)
-	if err1 != nil {
-		fmt.Println("Conversion failed:", err1)
-	}
+// 	if iBorder < DEFAULT_BORDER {
+// 		iBorder = DEFAULT_BORDER
+// 	}
 
-	iPreBorder := preAnalize(slStInput, iGame)
-
-	fmt.Print(incolor.StringMagenta("Граница повторений (%d или более) (сейчас рекомендация %d повторений) > ", DEFAULT_BORDER, iPreBorder))
-	fmt.Scanf("%v\n", &sBorder)
-	iBorder, err2 := strconv.Atoi(sBorder)
-	if err2 != nil {
-		fmt.Println("Conversion failed:", err2)
-	}
-
-	if iBorder < DEFAULT_BORDER {
-		iBorder = DEFAULT_BORDER
-	}
-
-	fmt.Println("")
-
-	startAnalize(slStInput, iGame, iBorder)
-}
+// 	startAnalize(slStInput, iGame, iBorder)
+// }
