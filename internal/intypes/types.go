@@ -13,3 +13,11 @@ type TStStatNumber struct {
 }
 
 type TMapNembers map[int]TStStatNumber
+
+type TCharacteristicNumder struct {
+	Name int
+	Sum  int
+}
+
+type TPremiumNumber []TCharacteristicNumder
+type TRiskNumbers []TCharacteristicNumder
