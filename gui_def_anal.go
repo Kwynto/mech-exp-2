@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
+	"github.com/Kwynto/mech-exp-2/internal/defective"
 )
 
 // Окно дефектного анализа
@@ -40,10 +42,7 @@ var (
 	defAnEnt3 *widget.Entry = widget.NewEntry()
 	defAnEnt4 *widget.Entry = widget.NewEntry()
 
-	defAnBtnOK *widget.Button = widget.NewButton("  OK  ", func() {
-		defAnGoodWindow.Show()
-		defAnBedWindow.Show()
-	})
+	defAnBtnOK   *widget.Button = widget.NewButton("  OK  ", fDefAnOK)
 	defAnBtnInfo *widget.Button = widget.NewButton("i", func() {
 		dialog.ShowInformation(
 			" ",
@@ -77,35 +76,38 @@ var defAnGoodWindow fyne.Window = fyneApp.NewWindow("Мечталлион 2 - а
 
 var showDefAnGoodTable *widget.Table = widget.NewTable(
 	func() (rows int, cols int) {
-		return len(SlStGames), 3
+		return len(slMainPremiumNumber), 3
 	},
 
 	func() fyne.CanvasObject {
-		return widget.NewLabel("   ")
+		return widget.NewLabel(" ")
 	},
 
 	func(tci widget.TableCellID, co fyne.CanvasObject) {
+		clear(slMainPremiumNumber)
+		clear(slMainRiskNumbers)
+
+		iGame, err := strconv.Atoi(defAnEnt1.Text)
+		if err != nil {
+			fmt.Println("Ошибка конвертации")
+		}
+
+		iBorder, err := strconv.Atoi(defAnEnt2.Text)
+		if err != nil {
+			fmt.Println("Ошибка конвертации")
+		}
+
+		slMainPremiumNumber, _ = defective.StartAnalize(SlStGames, iGame, iBorder)
+
 		co.(*widget.Label).SetText(func() string {
 			var sTemp string
 			switch tci.Col {
 			case 0:
-				sTemp = fmt.Sprintf("%d", SlStGames[tci.Row].Game)
+				sTemp = fmt.Sprintf("%d", slMainPremiumNumber[tci.Row].Name)
 			case 1:
-				sTemp = func(inArr []int) string {
-					var sT string
-					for _, v := range inArr {
-						sT = fmt.Sprintf("%s %d", sT, v)
-					}
-					return sT
-				}(SlStGames[tci.Row].Wins)
+				sTemp = "номер выиграл раз = "
 			case 2:
-				sTemp = func(inArr []int) string {
-					var sT string
-					for _, v := range inArr {
-						sT = fmt.Sprintf("%s %d", sT, v)
-					}
-					return sT
-				}(SlStGames[tci.Row].Wrong)
+				sTemp = fmt.Sprintf("%d", slMainPremiumNumber[tci.Row].Sum)
 			}
 			return sTemp
 		}())
@@ -117,35 +119,38 @@ var defAnBedWindow fyne.Window = fyneApp.NewWindow("Мечталлион 2 - а�
 
 var showDefAnBedTable *widget.Table = widget.NewTable(
 	func() (rows int, cols int) {
-		return len(SlStGames), 3
+		return len(slMainRiskNumbers), 3
 	},
 
 	func() fyne.CanvasObject {
-		return widget.NewLabel("   ")
+		return widget.NewLabel(" ")
 	},
 
 	func(tci widget.TableCellID, co fyne.CanvasObject) {
+		clear(slMainPremiumNumber)
+		clear(slMainRiskNumbers)
+
+		iGame, err := strconv.Atoi(defAnEnt1.Text)
+		if err != nil {
+			fmt.Println("Ошибка конвертации")
+		}
+
+		iBorder, err := strconv.Atoi(defAnEnt2.Text)
+		if err != nil {
+			fmt.Println("Ошибка конвертации")
+		}
+
+		_, slMainRiskNumbers = defective.StartAnalize(SlStGames, iGame, iBorder)
+
 		co.(*widget.Label).SetText(func() string {
 			var sTemp string
 			switch tci.Col {
 			case 0:
-				sTemp = fmt.Sprintf("%d", SlStGames[tci.Row].Game)
+				sTemp = fmt.Sprintf("%d", slMainRiskNumbers[tci.Row].Name)
 			case 1:
-				sTemp = func(inArr []int) string {
-					var sT string
-					for _, v := range inArr {
-						sT = fmt.Sprintf("%s %d", sT, v)
-					}
-					return sT
-				}(SlStGames[tci.Row].Wins)
+				sTemp = "номер проиграл раз = "
 			case 2:
-				sTemp = func(inArr []int) string {
-					var sT string
-					for _, v := range inArr {
-						sT = fmt.Sprintf("%s %d", sT, v)
-					}
-					return sT
-				}(SlStGames[tci.Row].Wrong)
+				sTemp = fmt.Sprintf("%d", slMainRiskNumbers[tci.Row].Sum)
 			}
 			return sTemp
 		}())
@@ -157,4 +162,24 @@ func fDefAnClose() {
 	defAnBedWindow.Hide()
 	defAnalizeWindow.Hide()
 	mainWindow.Show()
+}
+
+func fDefAnOK() {
+	clear(slMainPremiumNumber)
+	clear(slMainRiskNumbers)
+
+	iGame, err := strconv.Atoi(defAnEnt1.Text)
+	if err != nil {
+		fmt.Println("Ошибка конвертации")
+	}
+
+	iBorder, err := strconv.Atoi(defAnEnt2.Text)
+	if err != nil {
+		fmt.Println("Ошибка конвертации")
+	}
+
+	slMainPremiumNumber, slMainRiskNumbers = defective.StartAnalize(SlStGames, iGame, iBorder)
+
+	defAnGoodWindow.Show()
+	defAnBedWindow.Show()
 }

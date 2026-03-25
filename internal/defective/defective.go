@@ -34,8 +34,7 @@ func initMapNumbers() intypes.TMapNembers {
 
 func PreAnalize(slStInput []intypes.TStGame, iGame int) int {
 	var (
-		slWork []intypes.TStGame
-		// iAllNumbers int = 0
+		slWork    []intypes.TStGame
 		iAllWrong int = 0
 		iBorder   int = 0
 	)
@@ -59,9 +58,7 @@ func PreAnalize(slStInput []intypes.TStGame, iGame int) int {
 	}
 
 	for _, stGame := range slWork {
-		// iWinCount := len(stGame.Wins)
 		iWrongCount := len(stGame.Wrong)
-		// iAllNumbers = iAllNumbers + iWinCount + iWrongCount
 		iAllWrong = iAllWrong + iWrongCount
 	}
 
@@ -126,7 +123,6 @@ func StartAnalize(slStInput []intypes.TStGame, iGame, iBorder int) (intypes.TPre
 		}
 	}
 
-	// fmt.Println(incolor.StringGreenH("Премиальные номера:"))
 	for i := range NUMBERS_IN_GAME {
 		k1 := i + 1
 		for k, v := range mStatNumbers {
@@ -143,7 +139,6 @@ func StartAnalize(slStInput []intypes.TStGame, iGame, iBorder int) (intypes.TPre
 		}
 	}
 
-	// fmt.Println(incolor.StringRedH("Номера зоны риска:"))
 	for i := range NUMBERS_IN_GAME {
 		k1 := i + 1
 		for k, v := range mStatNumbers {
@@ -160,18 +155,3 @@ func StartAnalize(slStInput []intypes.TStGame, iGame, iBorder int) (intypes.TPre
 
 	return slPremiumNumber, slRiskNumbers
 }
-
-// func Start(slStInput []intypes.TStGame) {
-
-// 	SlStGames = slStInput
-
-// 	// временно
-// 	iGame := 0
-// 	iBorder := 2
-
-// 	if iBorder < DEFAULT_BORDER {
-// 		iBorder = DEFAULT_BORDER
-// 	}
-
-// 	startAnalize(slStInput, iGame, iBorder)
-// }

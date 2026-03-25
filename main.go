@@ -8,6 +8,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"github.com/Kwynto/mech-exp-2/internal/defective"
 	"github.com/Kwynto/mech-exp-2/internal/intypes"
 )
 
@@ -15,6 +16,11 @@ const FILE_NAME = "data.txt"
 const TEXT_MSG_1 = "Запись добалена"
 
 var SlStGames []intypes.TStGame
+
+var (
+	slMainPremiumNumber intypes.TPremiumNumber
+	slMainRiskNumbers   intypes.TRiskNumbers
+)
 
 func fileRead(sName string) (string, error) {
 	bRead, err := os.ReadFile(sName)
@@ -164,12 +170,16 @@ func setStartInterface() {
 
 	defAnalizeWindow.SetCloseIntercept(fDefAnClose)
 
-	showDefAnBedTable.SetColumnWidth(0, 50)
-	showDefAnBedTable.SetColumnWidth(1, 30)
-	showDefAnBedTable.SetColumnWidth(2, 150)
+	showDefAnGoodTable.SetColumnWidth(0, 50)
+	showDefAnGoodTable.SetColumnWidth(1, 200)
+	showDefAnGoodTable.SetColumnWidth(2, 50)
 
-	defAnGoodWindow.Resize(fyne.NewSize(300, 200))
-	defAnBedWindow.Resize(fyne.NewSize(300, 200))
+	showDefAnBedTable.SetColumnWidth(0, 50)
+	showDefAnBedTable.SetColumnWidth(1, 200)
+	showDefAnBedTable.SetColumnWidth(2, 50)
+
+	defAnGoodWindow.Resize(fyne.NewSize(350, 200))
+	defAnBedWindow.Resize(fyne.NewSize(350, 200))
 
 	defAnGoodWindow.SetContent(
 		showDefAnGoodTable,
@@ -181,6 +191,16 @@ func setStartInterface() {
 
 	defAnBedWindow.SetCloseIntercept(fDefAnClose)
 	defAnGoodWindow.SetCloseIntercept(fDefAnClose)
+
+	defAnEnt1.OnChanged = func(s string) {
+		iGame, err := strconv.Atoi(s)
+		if err != nil {
+			fmt.Println("Ошибка конвертации")
+		}
+		iBorder := defective.PreAnalize(SlStGames, iGame)
+		iSBorer := fmt.Sprint(iBorder)
+		defAnEnt2.SetText(iSBorer)
+	}
 }
 
 func main() {
